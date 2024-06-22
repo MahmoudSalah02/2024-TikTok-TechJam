@@ -36,3 +36,20 @@ class IdeaVote(Resource):
         if idea:
             return idea.to_json(), 200
         return {'message': 'Idea not found'}, 404
+    
+class IdeaDelete(Resource):
+    def post(self, id):
+        print(f"DELETE /ideas/{id} request received")
+        success = IdeaService.delete_idea_by_id(id)
+        if success:
+            return {'message': f'Idea with ID {id} deleted.'}, 200
+        return {'message': 'Idea not found'}, 404
+    
+class IdeaDeleteAll(Resource):
+    def post(self):
+        print(f"DELETE /ideas request received")
+        success = IdeaService.delete_all_ideas()
+        if success:
+            return {'message': 'All ideas deleted'}, 200
+        return {'message': "Somethings's wrong"}, 404
+
