@@ -38,3 +38,22 @@ class IdeaService:
             return idea
         print("Idea not found.")
         return None
+    
+    @staticmethod
+    def delete_idea_by_id(idea_id):
+        print("Deleting idea with ID:", idea_id)
+        idea = Idea.objects(id=idea_id).first()
+        if idea:
+            idea.delete()
+            print(f"Idea with ID {idea_id} deleted.")
+            return True
+        print(f"Idea with ID {idea_id} not found.")
+        return False
+
+    @staticmethod
+    def delete_all_ideas():
+        print("Deleting all ideas...")
+        result = Idea.objects.delete()
+        print(f"All ideas deleted. {result.deleted_count} documents were removed.")
+        return result.deleted_count
+

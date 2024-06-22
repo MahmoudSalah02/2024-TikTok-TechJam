@@ -14,12 +14,14 @@ def create_app():
     print("Setting up API...")
     api = Api(app)
 
-    from .routes.idea_routes import IdeaList, IdeaDetail, IdeaVote
+    from .routes.idea_routes import IdeaList, IdeaDetail, IdeaVote, IdeaDelete, IdeaDeleteAll
 
     print("Adding API resources...")
     api.add_resource(IdeaList, '/ideas')
     api.add_resource(IdeaDetail, '/ideas/<id>')
     api.add_resource(IdeaVote, '/ideas/<id>/vote')
+    api.add_resource(IdeaDeleteAll, '/ideas/<id>/delete')
+    api.add_resource(IdeaDelete,'/ideas/delete')
 
     # Hello, World! route
     @app.route('/hello', methods=['GET'])
@@ -28,3 +30,5 @@ def create_app():
 
     print("Flask app created.")
     return app
+
+
