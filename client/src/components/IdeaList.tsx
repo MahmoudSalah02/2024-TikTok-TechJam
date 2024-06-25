@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getIdeas, createIdea, voteIdea } from "../api/ideas";
+import { AuthContext } from "../context/AuthContext";
 
 interface Idea {
   id: string;
@@ -12,6 +13,7 @@ const IdeaList: React.FC = () => {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const { user } = useContext(AuthContext)!;
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -38,6 +40,10 @@ const IdeaList: React.FC = () => {
   };
 
   const handleVote = async (id: string, upvote: boolean) => {
+    if (!user) {
+      console.error("You must be logged in to vote");
+      return;
+    }
     try {
       const updatedIdea = await voteIdea(id, upvote);
       setIdeas(ideas.map((idea) => (idea.id === id ? updatedIdea : idea)));

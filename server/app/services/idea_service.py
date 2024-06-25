@@ -27,17 +27,22 @@ class IdeaService:
         return idea
 
     @staticmethod
-    def update_votes(idea_id, upvote=True):
+    def update_votes(idea_id, upvote):
         print("Updating votes for idea with ID:", idea_id)
         idea = Idea.objects(id=idea_id).first()
-        if idea:
-            print("Current votes:", idea.votes)
-            idea.votes += 1 if upvote else -1
-            idea.save()
-            print("Updated votes:", idea.votes)
-            return idea
-        print("Idea not found.")
-        return None
+        if not idea:
+            return None
+        
+        print("Current votes:", idea.votes)
+        if upvote:
+            idea.votes += 1
+        else:
+            idea.votes -= 1
+
+        idea.save()
+        print("Updated votes:", idea.votes)
+        
+        return idea
     
     @staticmethod
     def delete_idea_by_id(idea_id):
