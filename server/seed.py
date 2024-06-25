@@ -1,47 +1,49 @@
-from app import create_app
+from app import db, create_app
 from app.models.idea import Idea
-import os
+from app.models.celebrity import Celebrity
+from flask import Flask
+from mongoengine import connect
 
 def create_seed_data():
     app = create_app()
     with app.app_context():
         # Ensure the database is clean
-        Idea.objects.delete()
+        Celebrity.drop_collection()
 
-        # Define seed data
-        ideas = [
+    # Create sample ideas
+        celebrities_data = [
             {
-                "title": "Build a chatbot",
-                "description": "Create an AI-powered chatbot for customer service",
-                "votes": 10
+                'name': 'IShowSpeed',
+                'ideas': [
+                    {'title': 'Ice bucket challenge', "description": "Stupidest shit I've heard", 'votes': 10},
+                    {'title': 'Ronaldo gangbang', 'description': 'It is what it is', 'votes': 20}
+                ]
             },
             {
-                "title": "Develop a mobile app",
-                "description": "Develop a cross-platform mobile app for project management",
-                "votes": 5
+                'name': 'John Cena',
+                'ideas': [
+                    {'title': 'Invisibility', 'description': 'Turns invisible', 'votes': 5},
+                    {'title': 'Stronk', 'description': 'Smash Stuff', 'votes': 15}
+                ]
             },
             {
-                "title": "Launch a marketing campaign",
-                "description": "Launch a social media marketing campaign to increase brand awareness",
-                "votes": 8
-            },
-            {
-                "title": "Create an online course",
-                "description": "Develop an online course to teach programming skills",
-                "votes": 12
-            },
-            {
-                "title": "Organize a hackathon",
-                "description": "Organize a community hackathon event to foster innovation",
-                "votes": 7
+                'name': 'Mahmoud Salah',
+                'ideas': [
+                    {'title': 'Fortnite Battle Pass', 'description': 'I just shit out my ass', 'votes': 7},
+                    {'title': 'Fight Club', 'description': 'Fight everyone and hit them', 'votes': 12}
+                ]
             }
-        ]
+    ]
 
-        # Insert seed data
-        for idea_data in ideas:
-            idea = Idea(**idea_data)
-            idea.save()
-            print(f"Idea created with ID: {str(idea.id)}")
+    # Insert the data
+    for celebrity_data in celebrities_data:
+        celebrity = Celebrity(**celebrity_data)
+        celebrity.save()
+        print(f"Idea created with ID: {str(celebrity.id)}")
+
+
+    print("Database seeded successfully.")
+
 
 if __name__ == '__main__':
     create_seed_data()
