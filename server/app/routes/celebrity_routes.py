@@ -12,7 +12,6 @@ class CelebrityList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', required=True)
         args = parser.parse_args()
-        print("Parsed args:", args)
         celebrity = CelebrityService.create_celebrity(args)
         return celebrity.to_json(), 201
 
@@ -29,16 +28,7 @@ class CelebrityDetail(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', required=False)
         args = parser.parse_args()
-        print("Parsed args:", args)
         celebrity = CelebrityService.update_celebrity(id, args)
         if celebrity:
             return celebrity.to_json(), 200
         return {'message': 'Celebrity not found'}, 404
-
-    def delete(self, id):
-        print(f"DELETE /celebrities/{id} request received")
-        success = CelebrityService.delete_celebrity_by_id(id)
-        if success:
-            return {'message': f'Celebrity with ID {id} deleted.'}, 200
-        return {'message': 'Celebrity not found'}, 404
-
