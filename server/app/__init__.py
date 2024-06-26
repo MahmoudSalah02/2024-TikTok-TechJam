@@ -19,14 +19,18 @@ def create_app():
     jwt = JWTManager(app)
 
     from .routes.idea_routes import IdeaList, IdeaDetail, IdeaVote
-    from .routes.auth_routes import UserRegister, UserLogin
+    from .routes.celebrity_routes import CelebrityList, CelebrityDetail
 
     print("Adding API resources...")
-    api.add_resource(IdeaList, '/ideas')
-    api.add_resource(IdeaDetail, '/ideas/<id>')
-    api.add_resource(IdeaVote, '/ideas/<id>/vote')
-    api.add_resource(UserRegister, '/register')
-    api.add_resource(UserLogin, '/login')
+    api.add_resource(CelebrityList, '/celebrities')
+    api.add_resource(CelebrityDetail, '/celebrities/<string:id>')
+
+# Idea routes
+    api.add_resource(IdeaList, '/celebrities/<string:celebrity_id>/ideas')
+    api.add_resource(IdeaDetail, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>')
+    api.add_resource(IdeaVote, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>/vote')
+    # api.add_resource(IdeaDelete, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>')
+    # api.add_resource(IdeaDeleteAll, '/celebrities/<string:celebrity_id>/ideas/delete_all')
 
     # Hello, World! route
     @app.route('/hello', methods=['GET'])

@@ -1,10 +1,10 @@
-from app import db
+import mongoengine as db
 
-class Idea(db.Document):
+class Idea(db.EmbeddedDocument):
+    id = db.UUIDField(required = True)
     title = db.StringField(required=True)
     description = db.StringField(required=True)
     votes = db.IntField(default=0)
-    # comments = db.ListField(db.StringField())
 
     def to_json(self):
         return {
@@ -12,5 +12,4 @@ class Idea(db.Document):
             "title": self.title,
             "description": self.description,
             "votes": self.votes,
-            # "comments": self.comments
         }
