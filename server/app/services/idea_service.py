@@ -9,8 +9,8 @@ class IdeaService:
         if celebrity:
             new_idea = Idea(**idea_data)
             celebrity.ideas.append(new_idea)
+            print(celebrity.ideas)
             celebrity.save()
-            print("Idea added to celebrity:", celebrity.to_json())
             return new_idea
         print("Celebrity not found.")
         return None

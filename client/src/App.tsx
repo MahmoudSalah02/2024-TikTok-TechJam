@@ -10,7 +10,10 @@ const App: React.FC = () => {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/ideas" element={<IdeaList />} />
+          <Route
+            path="/celebrities/:celebrityId/ideas"
+            element={<IdeaList />}
+          />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           {/* Add other routes here */}
