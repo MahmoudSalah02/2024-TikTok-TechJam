@@ -7,35 +7,26 @@ from flask_jwt_extended import JWTManager
 db = MongoEngine()
 
 def create_app():
-    print("Creating Flask app...")
     app = Flask(__name__)
-    print("Loading config...")
     app.config.from_object('config.Config')
-    print("Initializing MongoDB...")
     db.init_app(app)
-    print("Setting up API...")
     api = Api(app)
     CORS(app)  # Enable CORS for the Flask app
     jwt = JWTManager(app)
 
     from .routes.idea_routes import IdeaList, IdeaDetail, IdeaVote
     from .routes.celebrity_routes import CelebrityList, CelebrityDetail
+    from .routes.auth_routes import UserRegister, UserLogin
 
-    print("Adding API resources...")
+    
+    api.add_resource(UserLogin, '/login')
+    api.add_resource(UserRegister, '/register')
+
     api.add_resource(CelebrityList, '/celebrities')
     api.add_resource(CelebrityDetail, '/celebrities/<string:id>')
 
-# Idea routes
     api.add_resource(IdeaList, '/celebrities/<string:celebrity_id>/ideas')
     api.add_resource(IdeaDetail, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>')
     api.add_resource(IdeaVote, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>/vote')
-    # api.add_resource(IdeaDelete, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>')
-    # api.add_resource(IdeaDeleteAll, '/celebrities/<string:celebrity_id>/ideas/delete_all')
 
-    # Hello, World! route
-    @app.route('/hello', methods=['GET'])
-    def hello_world():
-        return jsonify(message="Hello, World!")
-
-    print("Flask app created.")
     return app

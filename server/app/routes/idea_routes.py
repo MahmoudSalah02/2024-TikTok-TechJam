@@ -57,23 +57,7 @@ class IdeaVote(Resource):
                 user.upvoted_ideas.remove(idea_id)
             user.save()
 
-        idea = IdeaService.update_votes(idea_id, celebrity_id, upvote=args['upvote'])
+        idea = IdeaService.update_votes(celebrity_id, idea_id, upvote=args['upvote'])
         if idea:
             return idea.to_json(), 200
         return {'message': 'Idea not found'}, 404
-
-# class IdeaDelete(Resource):
-#     def delete(self, celebrity_id, idea_title):
-#         print(f"DELETE /celebrities/{celebrity_id}/ideas/{idea_title} request received")
-#         success = IdeaService.delete_idea_by_id(celebrity_id, idea_title)
-#         if success:
-#             return {'message': f'Idea with title {idea_title} deleted.'}, 200
-#         return {'message': 'Idea not found'}, 404
-
-# class IdeaDeleteAll(Resource):
-#     def delete(self, celebrity_id):
-#         print(f"DELETE /celebrities/{celebrity_id}/ideas request received")
-#         deleted_count = IdeaService.delete_all_ideas_from_celebrity(celebrity_id)
-#         if deleted_count > 0:
-#             return {'message': f'All {deleted_count} ideas deleted successfully.'}, 200
-#         return {'message': 'Celebrity not found or no ideas to delete.'}, 404

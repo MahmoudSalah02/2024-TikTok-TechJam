@@ -38,15 +38,3 @@ class CelebrityService:
             return celebrity
         print("Celebrity not found.")
         return None
-
-    # @staticmethod
-    # def delete_celebrity_by_id(celebrity_id):
-    #     print("Deleting celebrity with ID:", celebrity_id)
-    #     celebrity = Celebrity.objects(id=celebrity_id).first()
-    #     if celebrity:
-    #         celebrity.delete()
-    #         print(f"Celebrity with ID {celebrity_id} deleted.")
-    #         return True
-    #     print(f"Celebrity with ID {celebrity_id} not found.")
-    #     return False
-

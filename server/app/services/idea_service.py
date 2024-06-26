@@ -31,7 +31,7 @@ class IdeaService:
         celebrity = Celebrity.objects(id=celebrity_id).first()
         if celebrity:
             for idea in celebrity.ideas:
-                if idea.id == idea_id:
+                if str(idea.id) == idea_id: # idea.id is of type UUID
                     print("Idea found:", idea.to_json())
                     return idea
             print(f"Idea '{idea_id}' not found in celebrity's ideas.")
@@ -45,7 +45,7 @@ class IdeaService:
         celebrity = Celebrity.objects(id=celebrity_id).first()
         if celebrity:
             for idea in celebrity.ideas:
-                if idea.id == idea_id:
+                if str(idea.id) == idea_id:
                     print("Current votes:", idea.votes)
                     idea.votes += 1 if upvote else -1
                     celebrity.save()
@@ -55,34 +55,3 @@ class IdeaService:
         else:
             print("Celebrity not found.")
         return None
-    
-    # @staticmethod
-    # def delete_idea_by_id(celebrity_id, idea_title):
-    #     print(f"Deleting idea '{idea_title}' from celebrity with ID: {celebrity_id}")
-    #     celebrity = Celebrity.objects(id=celebrity_id).first()
-    #     if celebrity:
-    #         initial_count = len(celebrity.ideas)
-    #         celebrity.ideas = [idea for idea in celebrity.ideas if idea.title != idea_title]
-    #         if len(celebrity.ideas) < initial_count:
-    #             celebrity.save()
-    #             print(f"Idea '{idea_title}' deleted from celebrity with ID: {celebrity_id}.")
-    #             return True
-    #         else:
-    #             print(f"Idea '{idea_title}' not found in celebrity's ideas.")
-    #             return False
-    #     print(f"Celebrity with ID {celebrity_id} not found.")
-    #     return False
-
-    # @staticmethod
-    # def delete_all_ideas_from_celebrity(celebrity_id):
-    #     print(f"Deleting all ideas from celebrity with ID: {celebrity_id}")
-    #     celebrity = Celebrity.objects(id=celebrity_id).first()
-    #     if celebrity:
-    #         idea_count = len(celebrity.ideas)
-    #         celebrity.ideas = []
-    #         celebrity.save()
-    #         print(f"All {idea_count} ideas deleted from celebrity with ID: {celebrity_id}.")
-    #         return idea_count
-    #     print(f"Celebrity with ID {celebrity_id} not found.")
-    #     return 0
-
