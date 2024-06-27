@@ -74,3 +74,12 @@ class IdeaVote(Resource):
         if idea:
             return idea.to_json(), 200
         return {'message': 'Idea not found'}, 404
+    
+class IdeaDone(Resource):
+    def post(self, celebrity_id, idea_id):
+        print(f"POST /celebrities/{celebrity_id}/ideas/{idea_id}/done request received")
+
+        idea = IdeaService.toggle_idea_done(celebrity_id, idea_id)
+        if idea:
+            return idea.to_json(), 200
+        return {'message': 'Idea not found'}, 404

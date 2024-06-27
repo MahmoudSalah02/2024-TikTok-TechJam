@@ -8,6 +8,7 @@ class Idea(db.EmbeddedDocument):
     description = db.StringField(required=True)
     votes = db.IntField(default=0)
     date_added = db.DateTimeField(default=datetime.datetime.now)
+    done = db.BooleanField(default=False)
 
     def to_json(self):
         return {
@@ -16,4 +17,5 @@ class Idea(db.EmbeddedDocument):
             "description": self.description,
             "votes": self.votes,
             "date_added": self.date_added.isoformat(),
+            "done": self.done
         }

@@ -14,7 +14,7 @@ def create_app():
     CORS(app)  # Enable CORS for the Flask app
     jwt = JWTManager(app)
 
-    from .routes.idea_routes import IdeaList, IdeaDetail, IdeaVote
+    from .routes.idea_routes import IdeaList, IdeaDetail, IdeaVote, IdeaDone
     from .routes.celebrity_routes import CelebrityList, CelebrityDetail
     from .routes.auth_routes import UserRegister, UserLogin
 
@@ -28,5 +28,6 @@ def create_app():
     api.add_resource(IdeaList, '/celebrities/<string:celebrity_id>/ideas')
     api.add_resource(IdeaDetail, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>')
     api.add_resource(IdeaVote, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>/vote')
+    api.add_resource(IdeaDone, '/celebrities/<string:celebrity_id>/ideas/<string:idea_id>/done')
 
     return app
