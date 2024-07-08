@@ -55,3 +55,14 @@ class IdeaService:
         else:
             print("Celebrity not found.")
         return None
+    
+    @staticmethod
+    def toggle_idea_done(celebrity_id, idea_id):
+        celebrity = Celebrity.objects(id=celebrity_id).first()
+        if celebrity:
+            for idea in celebrity.ideas:
+                if str(idea.id) == idea_id:
+                    idea.done = not idea.done
+                    celebrity.save()
+                    return idea
+        return None

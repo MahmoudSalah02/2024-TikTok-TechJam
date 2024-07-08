@@ -1,5 +1,16 @@
 from app.models.celebrity import Celebrity
 from app.models.idea import Idea
+from pymongo import MongoClient
+from app import db
+import gridfs
+import os
+from dotenv import load_dotenv
+from bson.objectid import ObjectId
+
+load_dotenv()
+client = MongoClient(os.environ.get('MONGODB_URI'))
+db = client['Celebrity']
+fs = gridfs.GridFS(db)
 
 class CelebrityService:
     @staticmethod
@@ -38,3 +49,24 @@ class CelebrityService:
             return celebrity
         print("Celebrity not found.")
         return None
+
+    @staticmethod
+    def save_profile_picture(celebrity_id, image_data):
+        celebrity = Celebrity.objects(id=celebrity_id).first()
+        if not celebrity:
+            return {'message': 'Celebrity not found'}, 404
+
+        file_id = fs.put(image_data, filename="profile picture")
+        celebrity.profile_picture = str(file_id)
+        celebrity.save()
+
+        return celebrity
+    
+    @staticmethod
+    def get_profile_picture(file_id):
+        try:
+            file_id = ObjectId(file_id)
+            image = fs.get(file_id)
+            return image.read()
+        except:
+            return None

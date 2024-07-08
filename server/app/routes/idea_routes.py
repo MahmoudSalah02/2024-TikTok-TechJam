@@ -6,8 +6,21 @@ from app.models.user import User
 class IdeaList(Resource):
     def get(self, celebrity_id):
         print("GET /celebrities/{celebrity_id}/ideas request received")
+        parser = reqparse.RequestParser()
+        parser.add_argument('sort_by', type=str, choices=('date', 'votes'), default='date', location='args', help='Invalid sort_by value')
+        parser.add_argument('sort_order', type=str, choices=('asc', 'desc'), default='desc', location='args', help='Invalid sort_order value')
+        args = parser.parse_args()
+        print("Parsed args:", args)
+        sort_by = args['sort_by']
+        sort_order = args['sort_order']
         ideas = IdeaService.get_all_celebrity_ideas(celebrity_id)
-        return [idea.to_json() for idea in ideas], 200
+        if sort_by == 'date':
+            sorted_ideas = sorted(ideas, key=lambda idea: idea.date_added, reverse=(sort_order == 'desc'))
+        elif sort_by == 'votes':
+            sorted_ideas = sorted(ideas, key=lambda idea: idea.votes, reverse=(sort_order == 'desc'))
+        else:
+            return {'message': 'Invalid sort_by value'}, 400
+        return [idea.to_json() for idea in sorted_ideas], 200
 
     def post(self, celebrity_id):
         print("POST /celebrities/{celebrity_id}/ideas request received")
@@ -58,6 +71,15 @@ class IdeaVote(Resource):
             user.save()
 
         idea = IdeaService.update_votes(celebrity_id, idea_id, upvote=args['upvote'])
+        if idea:
+            return idea.to_json(), 200
+        return {'message': 'Idea not found'}, 404
+    
+class IdeaDone(Resource):
+    def post(self, celebrity_id, idea_id):
+        print(f"POST /celebrities/{celebrity_id}/ideas/{idea_id}/done request received")
+
+        idea = IdeaService.toggle_idea_done(celebrity_id, idea_id)
         if idea:
             return idea.to_json(), 200
         return {'message': 'Idea not found'}, 404
